@@ -1,0 +1,103 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: powderblue;
+            color: black;
+            overflow: hidden;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .invisible {
+            display: none;
+        }
+
+        #canvas {
+            width: 2560px;
+            height: 1440px;
+        }
+    </style>
+    <script>
+        const W = 2560;
+        const H = 1440;
+        const MAX_SIZE = 250;
+        const MIN_SIZE = 200;
+        Array.prototype.sample = function () { return this[Math.floor(Math.random() * this.length)] }
+        let IMGS = new Array();
+        // echo -n '["'; ls -q1 | paste -sd, - | sed 's/,/\", \"/g' | tr -d '\n'; echo '"]'
+        ["agatka.jpg", "alan-rickman-2.jpg", "alan-rickman.jpg", "artur.jpg", "beata-kozidrak.jpg", "boguslaw-linda.jpg", "borat.jpg", "brad-pitt.jpg", "bruce-campbell.jpg", "bruce-lee.jpg", "bruce-willis.jpg", "chada.png", "chajzer.jpg", "chopin.jpg", "christoph-waltz.jpg", "cubanpete.png", "czeslaw-majewski.jpg", "danny-trejo.jpg", "david-hasselhoff.jpg", "dexterw.jpg", "dicaprio.jpg", "doge.png", "doktornauk.png", "dumbledorez.png", "enrico-palazzo.jpg", "erdo.png", "fronczewski.jpg", "gajus-ceplus.webp", "grzegorz-markowski.jpg", "harrison-ford.jpg", "hogan.jpg", "hugh-laurie.jpg", "ibisz.jpg", "jacek-kaczmarski.jpg", "jacek-stachursky.jpg", "janczak.jpg", "jan-machulski.jpg", "janusz-tracz.jpg", "janusz-tylman.jpg", "jaroslaw-boberek.jpg", "jatowidzialem.png", "jean-claude-van-damme.jpg", "jerzy-stuhr.jpg", "joe-pesci.jpg", "johhny-sins.jpg", "john-travolta.jpg", "karol-krawczyk.jpg", "kayah.jpg", "keanu-reeves.jpg", "kombii-skawinski.jpg", "kopernik.jpg", "kora.jpg", "kraina-grzybow.jpg", "krystyna-czubowna.jpg", "krzysztof-cugowski.jpg", "krzysztof-krawczyk.jpg", "kula.jpg", "louis-de-funes.jpg", "lrp.png", "maciej-gudowski.jpg", "mads-mikkelsen.jpg", "majka-jezowska.jpg", "maklowicz.jpg", "marek-perepeczko.jpg", "marnypopis.png", "maryla-rodowicz.jpg", "mary-za-ciemno.jpg", "michal-milowicz.jpg", "morgan-freeman.jpg", "nick-boulder.jpg", "norek.png", "ojciec-mateusz.jpg", "olonb.png", "owsiak.jpg", "ozzy-osbourne.jpg", "panmieciu.jpg", "pkr.png", "ps1hagrid.jpg", "radek-kotarski.jpg", "rick-astely-2.jpg", "rick-astley.jpg", "rick-james.jpg", "rick-moranis.jpg", "robert-de-niro.jpg", "rowan-atkinson.jpg", "rudi-schuberth.jpg", "ryszard-rynkowski.jpg", "schwarzenegger.jpg", "shatner2.jpg", "shatner.jpg", "sidney-polak.jpg", "skryba.png", "so-cool.png", "steve-buscemi.jpg", "steven-van-zandt.jpg", "sylvester-stallone.jpg", "tak-srednio-bym-powiedzial.jpg", "testo2.png", "testo.png", "tim-roth.jpg", "tomasz-knapik.jpg", "tom-hanks.jpg", "tommy-lee-jones.jpg", "tommy-vercetti.jpg", "tom-scott.jpg", "tumulec.jpg", "tu-sie-jebnij.jpg", "wally.png", "werner3.png", "wide-peepo-gladiator.png", "wislawa-szymborska.jpg", "wladyslaw-bartoszewski.jpg", "wojciech-kilar.jpg", "wojciech-mann.jpg", "wsciekly-waz.jpg", "xardas.jpg", "zaborski.jpg", "zamachowski.jpg", "zbigniew-religa.jpg", "zbigniew-wodecki-2.jpg", "zbigniew-wodecki.jpg"]
+        .forEach(img => {
+            let img_elem = new Image();
+            img_elem.onload = () => {
+                IMGS.push(img_elem);
+            }
+            img_elem.src = `layout_imgs/${img}`;
+        })
+
+    </script>
+</head>
+
+<body>
+    <canvas id="canvas" width="2560" height="1440"></canvas>
+    <script>
+        canvas = document.getElementById("canvas").getContext("2d");
+        document.addEventListener("DOMContentLoaded", function () {
+            setInterval(() => {
+                let img = IMGS.sample();
+                let x = Math.floor(Math.random() * W);
+                let y = Math.floor(Math.random() * H);
+
+                if (img.width <= MAX_SIZE && img.height <= MAX_SIZE) {
+                    if (x + img.width > W) {
+                        x = W - img.width;
+                    }
+
+                    if (y + img.height > H) {
+                        y = H - img.height;
+                    }
+
+                    canvas.drawImage(img, x, y);
+                    return;
+                }
+
+                let ratio = img.width / img.height;
+                let new_width, new_height;
+                const bigger_size = MIN_SIZE + Math.floor(Math.random() * (MAX_SIZE - MIN_SIZE));
+
+                if (img.width >= img.height) {
+                    new_width = bigger_size;
+                    new_height = Math.floor(new_width / ratio);
+                }
+                else {
+                    new_height = bigger_size;
+                    new_width = Math.floor(new_height * ratio);
+                }
+
+                createImageBitmap(
+                    img,
+                    { resizeWidth: new_width, resizeHeight: new_height, resizeQuality: 'high' }
+                )
+                    .then(new_img => {
+                        if (x + new_width > W) {
+                            x = W - new_width;
+                        }
+
+                        if (y + new_height > H) {
+                            y = H - new_height;
+                        }
+
+                        canvas.drawImage(new_img, x, y);
+                    }
+                    );
+
+
+            }, 100);
+
+        }, false);
+    </script>
+</body>
+
+</html>

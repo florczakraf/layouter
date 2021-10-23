@@ -38,6 +38,36 @@
             img_elem.src = `layout_imgs/${img}`;
         })
 
+        function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+
+        function just_draw(canvas, img, x, y) {
+            canvas.drawImage(img, x, y);
+        }
+
+        function draw_left_to_right(canvas, img, x, y) {
+            for (let i = 1; i <= img.width; i++) {
+                sleep(i).then(() => {
+                    canvas.drawImage(img, 0, 0, i, img.height, x, y, i, img.height);
+                });
+            }
+        }
+
+        function draw_top_to_bottom(canvas, img, x, y) {
+            for (let i = 1; i <= img.height; i++) {
+                sleep(i).then(() => {
+                    canvas.drawImage(img, 0, 0, img.width, i, x, y, img.width, i);
+                });
+            }
+        }
+
+        let draw_functions = [
+            just_draw,
+            draw_left_to_right,
+            draw_top_to_bottom,
+        ];
+
     </script>
 </head>
 
@@ -71,7 +101,7 @@
                         y = H - img.height;
                     }
 
-                    canvas.drawImage(img, x, y);
+                    draw_functions.sample()(canvas, img, x, y);
                     return;
                 }
 
@@ -101,7 +131,8 @@
                             y = H - new_height;
                         }
 
-                        canvas.drawImage(new_img, x, y);
+                        draw_functions.sample()(canvas, new_img, x, y);
+
                     }
                     );
 

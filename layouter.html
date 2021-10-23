@@ -102,12 +102,69 @@
             }
         }
 
+        function draw_middle_out_vertically(canvas, img, x, y) {
+            let steps = 200;
+            let step_x = img.width / steps;
+            let step_y = img.height / steps;
+
+            for (let i = 1; i <= steps; i++) {
+                sleep(i).then(() => {
+                    canvas.drawImage(
+                        img,
+                        0, img.height / 2 - (i * step_y / 2),
+                        img.width, i * step_y,
+                        x, y + img.height / 2 - i * step_y / 2,
+                        img.width, i * step_y
+                    );
+                });
+            }
+        }
+
+        function draw_middle_out_horizontally(canvas, img, x, y) {
+            let steps = 200;
+            let step_x = img.width / steps;
+            let step_y = img.height / steps;
+
+            for (let i = 1; i <= steps; i++) {
+                sleep(i).then(() => {
+                    canvas.drawImage(
+                        img,
+                        img.width / 2 - (i * step_x / 2), 0,
+                        i * step_x, img.height,
+                        x + img.width / 2 - i * step_x / 2, y,
+                        i * step_x, img.height
+                    );
+                });
+            }
+        }
+
+        function draw_middle_out(canvas, img, x, y) {
+            let steps = 200;
+            let step_x = img.width / steps;
+            let step_y = img.height / steps;
+
+            for (let i = 1; i <= steps; i++) {
+                sleep(i).then(() => {
+                    canvas.drawImage(
+                        img,
+                        img.width / 2 - (i * step_x / 2), img.height / 2 - (i * step_y / 2),
+                        i * step_x, i * step_y,
+                        x + img.width / 2 - i * step_x / 2, y + img.height / 2 - i * step_y / 2,
+                        i * step_x, i * step_y
+                    );
+                });
+            }
+        }
+
         let draw_functions = [
             just_draw,
             draw_left_to_right,
             draw_top_to_bottom,
             draw_right_to_left,
             draw_bottom_to_top,
+            draw_middle_out_vertically,
+            draw_middle_out_horizontally,
+            draw_middle_out,
         ];
 
     </script>

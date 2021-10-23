@@ -193,6 +193,24 @@
             draw_snake_chunk(canvas, img, x, y, 0, 0, steps, false);
         }
 
+        function draw_zoom_middle_out(canvas, img, x, y) {
+            let steps = 500;
+            let step_x = img.width / steps;
+            let step_y = img.height / steps;
+
+            for (let i = 1; i <= steps; i++) {
+                sleep(i).then(() => {
+                    canvas.drawImage(
+                        img,
+                        0, 0,
+                        img.width, img.height,
+                        x + img.width / 2 - i * step_x / 2, y + img.height / 2 - i * step_y / 2,
+                        i * step_x, i * step_y
+                    );
+                });
+            }
+        }
+
         let draw_functions = [
             just_draw,
             draw_left_to_right,
@@ -203,6 +221,7 @@
             draw_middle_out_horizontally,
             draw_middle_out,
             draw_snake,
+            draw_zoom_middle_out,
         ];
 
     </script>

@@ -49,7 +49,13 @@
         function draw_left_to_right(canvas, img, x, y) {
             for (let i = 1; i <= img.width; i++) {
                 sleep(i).then(() => {
-                    canvas.drawImage(img, 0, 0, i, img.height, x, y, i, img.height);
+                    canvas.drawImage(
+                        img,
+                        0, 0,
+                        i, img.height,
+                        x, y,
+                        i, img.height
+                    );
                 });
             }
         }
@@ -57,7 +63,41 @@
         function draw_top_to_bottom(canvas, img, x, y) {
             for (let i = 1; i <= img.height; i++) {
                 sleep(i).then(() => {
-                    canvas.drawImage(img, 0, 0, img.width, i, x, y, img.width, i);
+                    canvas.drawImage(
+                        img,
+                        0, 0,
+                        img.width, i,
+                        x, y,
+                        img.width, i
+                    );
+                });
+            }
+        }
+
+        function draw_right_to_left(canvas, img, x, y) {
+            for (let i = 1; i <= img.width; i++) {
+                sleep(i).then(() => {
+                    canvas.drawImage(
+                        img,
+                        img.width - i, 0,
+                        i, img.height,
+                        x + img.width - i, y,
+                        i, img.height
+                     );
+                });
+            }
+        }
+
+        function draw_bottom_to_top(canvas, img, x, y) {
+            for (let i = 1; i <= img.height; i++) {
+                sleep(i).then(() => {
+                    canvas.drawImage(
+                        img,
+                        0, img.height - i,
+                        img.width, i,
+                        x, y + img.height - i,
+                        img.width, i
+                    );
                 });
             }
         }
@@ -66,6 +106,8 @@
             just_draw,
             draw_left_to_right,
             draw_top_to_bottom,
+            draw_right_to_left,
+            draw_bottom_to_top,
         ];
 
     </script>

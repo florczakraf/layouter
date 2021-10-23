@@ -156,6 +156,43 @@
             }
         }
 
+        function draw_snake_chunk(canvas, img, x, y, i, j, steps, rtl) {
+            if (j >= steps) {
+                return;
+            }
+
+            let step_x = img.width / steps;
+            let step_y = img.height / steps;
+
+            canvas.drawImage(
+                img,
+                i * step_x, j * step_y,
+                step_x, step_y,
+                x + i * step_x, y + j * step_y,
+                step_x, step_y
+            );
+
+            i = i + (rtl ? -1 : 1);
+
+            if (i == steps){
+                rtl = !rtl;
+                i--;
+                j++;
+            }
+            else if (i == -1) {
+                rtl = !rtl;
+                i++;
+                j++;
+            }
+
+            sleep(20).then(() => draw_snake_chunk(canvas, img, x, y, i, j, steps, rtl));
+        }
+
+        function draw_snake(canvas, img, x, y) {
+            let steps = 5;
+            draw_snake_chunk(canvas, img, x, y, 0, 0, steps, false);
+        }
+
         let draw_functions = [
             just_draw,
             draw_left_to_right,
@@ -165,6 +202,7 @@
             draw_middle_out_vertically,
             draw_middle_out_horizontally,
             draw_middle_out,
+            draw_snake,
         ];
 
     </script>

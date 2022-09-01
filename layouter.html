@@ -245,8 +245,8 @@
                 IMGS.splice(IMGS.indexOf(img), 1);
                 IMGS2.push(img);
 
-                let x = Math.floor(Math.random() * W);
-                let y = Math.floor(Math.random() * H);
+                let x = Math.max(Math.floor(Math.random() * (W + img.width)) - img.width, 0);
+                let y = Math.max(Math.floor(Math.random() * (H + img.height)) - img.height, 0);
 
                 if (img.width <= MAX_SIZE && img.height <= MAX_SIZE) {
                     if (x + img.width > W) {
